@@ -10,13 +10,13 @@ from utils.IOUtils import IOUtils
 class ChurnDatasetPreprocessor:
     y_feature = 'Exited'
 
-    churn_dataset_filename = 'Churn_Modelling.csv'
+    churn_dataset_filepath = 'data/churn_modelling.csv'
     standardizer_dump_filepath = 'preprocessors/scaler.pkl'
     label_encoder_gender_dump_filepath = 'preprocessors/label_encoder_gender.pkl'
     onehot_encoder_geo_dump_filepath = 'preprocessors/onehot_encoder_geo.pkl'
 
     def __init__(self, dump_preprocessors=True, split_test_size=0.2, split_random_state=42):
-        self.__data: DataFrame = pd.read_csv(self.churn_dataset_filename)
+        self.__data: DataFrame = pd.read_csv(self.churn_dataset_filepath)
         self.__x_train = None
         self.__x_test = None
         self.__y_train = None
