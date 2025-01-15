@@ -9,9 +9,9 @@ from utils.IOUtils import IOUtils
 
 # Variables
 model = load_model('model.keras')
-label_encoder_gender = cast(LabelEncoder, IOUtils.pickle_load_file('label_encoder_gender.pkl'))
-onehot_encoder_geo = cast(OneHotEncoder, IOUtils.pickle_load_file('onehot_encoder_geo.pkl'))
-scaler = cast(StandardScaler, IOUtils.pickle_load_file('scaler.pkl'))
+label_encoder_gender = cast(LabelEncoder, IOUtils.pickle_load_file('preprocessors/label_encoder_gender.pkl'))
+onehot_encoder_geo = cast(OneHotEncoder, IOUtils.pickle_load_file('preprocessors/onehot_encoder_geo.pkl'))
+scaler = cast(StandardScaler, IOUtils.pickle_load_file('preprocessors/scaler.pkl'))
 
 # Website input fields
 st.set_page_config(page_title="Basic-Churn-ANN")

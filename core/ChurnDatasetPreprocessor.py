@@ -11,9 +11,9 @@ class ChurnDatasetPreprocessor:
     y_feature = 'Exited'
 
     churn_dataset_filename = 'Churn_Modelling.csv'
-    standardizer_dump_filename = 'scaler.pkl'
-    label_encoder_gender_dump_filename = 'label_encoder_gender.pkl'
-    onehot_encoder_geo_dump_filename = 'onehot_encoder_geo.pkl'
+    standardizer_dump_filepath = 'preprocessors/scaler.pkl'
+    label_encoder_gender_dump_filepath = 'preprocessors/label_encoder_gender.pkl'
+    onehot_encoder_geo_dump_filepath = 'preprocessors/onehot_encoder_geo.pkl'
 
     def __init__(self, dump_preprocessors=True, split_test_size=0.2, split_random_state=42):
         self.__data: DataFrame = pd.read_csv(self.churn_dataset_filename)
@@ -82,6 +82,6 @@ class ChurnDatasetPreprocessor:
             self.__dump_preprocessors()
 
     def __dump_preprocessors(self) -> None:
-        IOUtils.pickle_dump_object(self.__standardizer, self.standardizer_dump_filename)
-        IOUtils.pickle_dump_object(self.__label_encoder_gender, self.label_encoder_gender_dump_filename)
-        IOUtils.pickle_dump_object(self.__one_hot_encoder_geo, self.onehot_encoder_geo_dump_filename)
+        IOUtils.pickle_dump_object(self.__standardizer, self.standardizer_dump_filepath)
+        IOUtils.pickle_dump_object(self.__label_encoder_gender, self.label_encoder_gender_dump_filepath)
+        IOUtils.pickle_dump_object(self.__one_hot_encoder_geo, self.onehot_encoder_geo_dump_filepath)

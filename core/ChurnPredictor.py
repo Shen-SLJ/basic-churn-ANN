@@ -11,15 +11,15 @@ from utils.PandaUtils import PandaUtils
 
 class ChurnPredictor:
     model_filename = 'model.keras'
-    label_encoder_gender_filename = 'label_encoder_gender.pkl'
-    onehot_encoder_geo_filename = 'onehot_encoder_geo.pkl'
-    scaler_filename = 'scaler.pkl'
+    label_encoder_gender_filepath = 'preprocessors/label_encoder_gender.pkl'
+    onehot_encoder_geo_filepath = 'preprocessors/onehot_encoder_geo.pkl'
+    scaler_filepath = 'preprocessors/scaler.pkl'
 
     def __init__(self):
         self.__model = cast(Model, load_model(self.model_filename))
-        self.__label_encoder_gender = cast(LabelEncoder, IOUtils.pickle_load_file(self.label_encoder_gender_filename))
-        self.__onehot_encoder_geo = cast(OneHotEncoder, IOUtils.pickle_load_file(self.onehot_encoder_geo_filename))
-        self.__scaler = cast(StandardScaler, IOUtils.pickle_load_file(self.scaler_filename))
+        self.__label_encoder_gender = cast(LabelEncoder, IOUtils.pickle_load_file(self.label_encoder_gender_filepath))
+        self.__onehot_encoder_geo = cast(OneHotEncoder, IOUtils.pickle_load_file(self.onehot_encoder_geo_filepath))
+        self.__scaler = cast(StandardScaler, IOUtils.pickle_load_file(self.scaler_filepath))
 
         self.__x = None
 
