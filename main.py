@@ -1,7 +1,7 @@
 import datetime
-from typing import Any
-
 import pandas as pd
+
+from utils.IOUtils import IOUtils
 from keras import Sequential
 from keras.src.callbacks import TensorBoard, EarlyStopping
 from keras.src.layers import Dense
@@ -10,7 +10,6 @@ from keras.src.optimizers import Adam
 from pandas import DataFrame
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler, OneHotEncoder
-import pickle
 
 
 class ChurnDataPreprocessor:
@@ -96,13 +95,6 @@ class ChurnDataPreprocessor:
 
         self.__data.drop(labels=['Geography'], axis=1, inplace=True)
         self.__data = pd.concat([self.__data, geo_ohe_df], axis=1, copy=False)
-
-
-class IOUtils:
-    @staticmethod
-    def pickle_dump_object(obj: Any, filename: str) -> None:
-        with open(filename, 'wb') as file:
-            pickle.dump(obj, file)
 
 
 if __name__ == '__main__':

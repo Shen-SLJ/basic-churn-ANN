@@ -1,11 +1,10 @@
-import pickle
-from typing import cast, Any
-
 import pandas as pd
-from keras import Model
 
+from keras import Model
 from keras.src.saving import load_model
 from sklearn.preprocessing import OneHotEncoder, LabelEncoder, StandardScaler
+from typing import cast, Any
+from utils.IOUtils import IOUtils
 
 # fake example input data
 input_data = {
@@ -70,13 +69,6 @@ class ChurnPredictor:
 
     def __standardize_x_values(self):
         self.__x = self.__scaler.transform(self.__x)
-
-
-class IOUtils:
-    @staticmethod
-    def pickle_load_file(filename: str):
-        with open(filename, 'rb') as file:
-            return pickle.load(file)
 
 
 if __name__ == '__main__':
