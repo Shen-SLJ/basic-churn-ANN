@@ -9,6 +9,6 @@ class IOUtils:
             pickle.dump(obj, file)
 
     @staticmethod
-    def pickle_load_file(filename: str):
+    def pickle_load_file(filename: str) -> Any:
         with open(filename, 'rb') as file:
             return pickle.load(file)
