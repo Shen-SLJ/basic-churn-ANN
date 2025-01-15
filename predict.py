@@ -30,7 +30,7 @@ class ChurnPredictor:
     def __init__(self):
         self.__model = cast(Model, load_model(self.model_filename))
         self.__label_encoder_gender = cast(LabelEncoder, IOUtils.pickle_load_file(self.label_encoder_gender_filename))
-        self.__onehot_encoder_gender = cast(OneHotEncoder, IOUtils.pickle_load_file(self.onehot_encoder_geo_filename))
+        self.__onehot_encoder_geo = cast(OneHotEncoder, IOUtils.pickle_load_file(self.onehot_encoder_geo_filename))
         self.__scaler = cast(StandardScaler, IOUtils.pickle_load_file(self.scaler_filename))
 
         self.__x = None
@@ -59,9 +59,9 @@ class ChurnPredictor:
         self.__x = pd.concat([self.__x, ohe_geography_df], axis=1)
 
     def __ohe_geography_df(self) -> pd.DataFrame:
-        ohe_geography = self.__onehot_encoder_gender.transform(self.__x[['Geography']])
+        ohe_geography = self.__onehot_encoder_geo.transform(self.__x[['Geography']])
         ohe_geography_df = pd.DataFrame(ohe_geography.toarray(),
-                                        columns=self.__onehot_encoder_gender.get_feature_names_out())
+                                        columns=self.__onehot_encoder_geo.get_feature_names_out())
         return ohe_geography_df
 
     def __convert_gender_to_label_encoding(self):
