@@ -16,7 +16,7 @@ import pickle
 class ChurnDataPreprocessor:
     y_feature = 'Exited'
 
-    standardizer_dump_filename = 'scalar.pkl'
+    standardizer_dump_filename = 'scaler.pkl'
     label_encoder_gender_dump_filename = 'label_encoder_gender.pkl'
     onehot_encoder_geo_dump_filename = 'onehot_encoder_geo.pkl'
 

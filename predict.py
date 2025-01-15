@@ -1,7 +1,8 @@
 import pickle
-from typing import cast
+from typing import cast, Any
 
 import pandas as pd
+from keras import Model
 
 from keras.src.saving import load_model
 from sklearn.preprocessing import OneHotEncoder, LabelEncoder, StandardScaler
@@ -20,38 +21,70 @@ input_data = {
     'EstimatedSalary': 50000
 }
 
+
+class ChurnPredictor:
+    model_filename = 'model.keras'
+    label_encoder_gender_filename = 'label_encoder_gender.pkl'
+    onehot_encoder_geo_filename = 'onehot_encoder_geo.pkl'
+    scaler_filename = 'scaler.pkl'
+
+    def __init__(self):
+        self.__model = cast(Model, load_model(self.model_filename))
+        self.__label_encoder_gender = cast(LabelEncoder, IOUtils.pickle_load_file(self.label_encoder_gender_filename))
+        self.__onehot_encoder_gender = cast(OneHotEncoder, IOUtils.pickle_load_file(self.onehot_encoder_geo_filename))
+        self.__scaler = cast(StandardScaler, IOUtils.pickle_load_file(self.scaler_filename))
+
+        self.__x = None
+
+    def predict_likelihood(self, x: dict[str, Any]) -> float:
+        self.__x = x
+        self.__preprocess_x()
+
+        prediction = self.__model.predict(self.__x)
+        prediction_probability = prediction[0][0]
+
+        return prediction_probability
+
+    def __preprocess_x(self):
+        self.__convert_x_to_df()
+        self.__convert_geography_to_ohe()
+        self.__convert_gender_to_label_encoding()
+        self.__standardize_x_values()
+
+    def __convert_x_to_df(self):
+        self.__x = pd.DataFrame([self.__x])
+
+    def __convert_geography_to_ohe(self):
+        ohe_geography_df = self.__ohe_geography_df()
+        self.__x.drop('Geography', axis=1, inplace=True)
+        self.__x = pd.concat([self.__x, ohe_geography_df], axis=1)
+
+    def __ohe_geography_df(self) -> pd.DataFrame:
+        ohe_geography = self.__onehot_encoder_gender.transform(self.__x[['Geography']])
+        ohe_geography_df = pd.DataFrame(ohe_geography.toarray(),
+                                        columns=self.__onehot_encoder_gender.get_feature_names_out())
+        return ohe_geography_df
+
+    def __convert_gender_to_label_encoding(self):
+        self.__x['Gender'] = self.__label_encoder_gender.transform(self.__x['Gender'])
+
+    def __standardize_x_values(self):
+        self.__x = self.__scaler.transform(self.__x)
+
+
+class IOUtils:
+    @staticmethod
+    def pickle_load_file(filename: str):
+        with open(filename, 'rb') as file:
+            return pickle.load(file)
+
+
 if __name__ == '__main__':
-    model = load_model('model.keras')
-
-    with open('label_encoder_gender.pkl', 'br') as file:
-        label_encoder_gender = cast(LabelEncoder, pickle.load(file))
-
-    with open('onehot_encoder_geo.pkl', 'br') as file:
-        onehot_encoder_geo = cast(OneHotEncoder, pickle.load(file))
-
-    with open('scalar.pkl', 'br') as file:
-        scalar = cast(StandardScaler, pickle.load(file))
-
-    input_data_df = pd.DataFrame([input_data])
-
-    # geo pre-process
-    input_onehot_geo = onehot_encoder_geo.transform(input_data_df[['Geography']])
-    input_onehot_geo_df = pd.DataFrame(input_onehot_geo.toarray(), columns=onehot_encoder_geo.get_feature_names_out())
-    input_data_df.drop(['Geography'], axis=1, inplace=True)
-    input_data_df = pd.concat([input_data_df, input_onehot_geo_df], axis=1)
-
-    # gender pre-process
-    input_data_df['Gender'] = label_encoder_gender.transform(input_data_df['Gender'])
-
-    # scale all x-values
-    input_data_scaled = scalar.transform(input_data_df)
-
-    #predict
-    prediction = model.predict(input_data_scaled)
-    prediction_probability = prediction[0][0]
+    churn_predictor = ChurnPredictor()
+    prediction_probability = churn_predictor.predict_likelihood(input_data)
 
     print(f"Prediction: {prediction_probability}")
-    if prediction > 0.5:
+    if prediction_probability > 0.5:
         print("Likely to churn")
     else:
         print("Not likely to churn")
