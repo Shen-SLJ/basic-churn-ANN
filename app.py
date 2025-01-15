@@ -8,7 +8,7 @@ from core.ChurnPredictor import ChurnPredictor
 from utils.IOUtils import IOUtils
 
 # Variables
-model = load_model('model.keras')
+model = load_model('model/model.keras')
 label_encoder_gender = cast(LabelEncoder, IOUtils.pickle_load_file('preprocessors/label_encoder_gender.pkl'))
 onehot_encoder_geo = cast(OneHotEncoder, IOUtils.pickle_load_file('preprocessors/onehot_encoder_geo.pkl'))
 scaler = cast(StandardScaler, IOUtils.pickle_load_file('preprocessors/scaler.pkl'))

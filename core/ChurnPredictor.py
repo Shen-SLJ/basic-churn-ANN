@@ -10,7 +10,7 @@ from utils.PandaUtils import PandaUtils
 
 
 class ChurnPredictor:
-    model_filename = 'model.keras'
+    model_filename = 'model/model.keras'
     label_encoder_gender_filepath = 'preprocessors/label_encoder_gender.pkl'
     onehot_encoder_geo_filepath = 'preprocessors/onehot_encoder_geo.pkl'
     scaler_filepath = 'preprocessors/scaler.pkl'
