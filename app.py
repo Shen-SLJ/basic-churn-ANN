@@ -7,13 +7,25 @@ from keras.src.saving import load_model
 from core.ChurnPredictor import ChurnPredictor
 from utils.IOUtils import IOUtils
 
-# Variables
-model = load_model('model/model.keras')
-label_encoder_gender = cast(LabelEncoder, IOUtils.pickle_load_file('preprocessors/label_encoder_gender.pkl'))
-onehot_encoder_geo = cast(OneHotEncoder, IOUtils.pickle_load_file('preprocessors/onehot_encoder_geo.pkl'))
-scaler = cast(StandardScaler, IOUtils.pickle_load_file('preprocessors/scaler.pkl'))
+# ======================================================================================================================
+# Constants
+# ======================================================================================================================
+FILEPATH_MODEL = 'model/model.keras'
+FILEPATH_LABEL_ENCODER_GENDER = 'preprocessors/label_encoder_gender.pkl'
+FILEPATH_ONEHOT_ENCODER_GEO = 'preprocessors/onehot_encoder_geo.pkl'
+FILEPATH_SCALER = 'preprocessors/scaler.pkl'
 
-# Website input fields
+# ======================================================================================================================
+# Variables
+# ======================================================================================================================
+model = load_model(FILEPATH_MODEL)
+label_encoder_gender = cast(LabelEncoder, IOUtils.pickle_load_file(FILEPATH_LABEL_ENCODER_GENDER))
+onehot_encoder_geo = cast(OneHotEncoder, IOUtils.pickle_load_file(FILEPATH_ONEHOT_ENCODER_GEO))
+scaler = cast(StandardScaler, IOUtils.pickle_load_file(FILEPATH_SCALER))
+
+# ======================================================================================================================
+# Website definition
+# ======================================================================================================================
 st.set_page_config(page_title="Basic-Churn-ANN")
 
 st.title("Basic-Churn-ANN")
@@ -32,7 +44,9 @@ has_credit_card = st.checkbox('Has credit card')
 is_active_member = st.checkbox('Is active')
 estimated_salary = st.number_input('Estimated salary', min_value=0)
 
+# ======================================================================================================================
 # Predict
+# ======================================================================================================================
 input_data = {
     'CreditScore': credit_score,
     'Geography': geography,
@@ -49,7 +63,9 @@ input_data = {
 predictor = ChurnPredictor()
 likelihood = predictor.predict_likelihood(input_data)
 
-# Write prediction to website
+# ======================================================================================================================
+# Writing prediction to website
+# ======================================================================================================================
 st.divider()
 st.write(f"Likelihood: **{likelihood}**")
 st.write(f"{"Likely **won't** churn" if likelihood < 0.50 else "Likely **will** churn"}")

@@ -8,15 +8,15 @@ from utils.IOUtils import IOUtils
 
 
 class ChurnDatasetPreprocessor:
-    y_feature = 'Exited'
+    Y_FEATURE_NAME = 'Exited'
 
-    churn_dataset_filepath = 'data/churn_modelling.csv'
-    standardizer_dump_filepath = 'preprocessors/scaler.pkl'
-    label_encoder_gender_dump_filepath = 'preprocessors/label_encoder_gender.pkl'
-    onehot_encoder_geo_dump_filepath = 'preprocessors/onehot_encoder_geo.pkl'
+    FILEPATH_CHURN_DATASET = 'data/churn_modelling.csv'
+    DUMP_FILEPATH_STANDARDIZER = 'preprocessors/scaler.pkl'
+    DUMP_FILEPATH_LABEL_ENCODER_GENDER = 'preprocessors/label_encoder_gender.pkl'
+    DUMP_FILEPATH_ONEHOT_ENCODER_GEO = 'preprocessors/onehot_encoder_geo.pkl'
 
     def __init__(self, dump_preprocessors=True, split_test_size=0.2, split_random_state=42):
-        self.__data: DataFrame = pd.read_csv(self.churn_dataset_filepath)
+        self.__data: DataFrame = pd.read_csv(self.FILEPATH_CHURN_DATASET)
         self.__x_train = None
         self.__x_test = None
         self.__y_train = None
@@ -71,8 +71,8 @@ class ChurnDatasetPreprocessor:
         self.__x_test = ChurnDataPreprocessingUtils.df_standardized(self.__x_test, self.__standardizer)
 
     def __create_train_test_split_data(self) -> None:
-        x = self.__data.drop(self.y_feature, axis=1)
-        y = self.__data[self.y_feature]
+        x = self.__data.drop(self.Y_FEATURE_NAME, axis=1)
+        y = self.__data[self.Y_FEATURE_NAME]
         self.__x_train, self.__x_test, self.__y_train, self.__y_test = train_test_split(
             x, y, test_size=self.__split_test_size, random_state=self.__split_random_state
         )
@@ -82,6 +82,6 @@ class ChurnDatasetPreprocessor:
             self.__dump_preprocessors()
 
     def __dump_preprocessors(self) -> None:
-        IOUtils.pickle_dump_object(self.__standardizer, self.standardizer_dump_filepath)
-        IOUtils.pickle_dump_object(self.__label_encoder_gender, self.label_encoder_gender_dump_filepath)
-        IOUtils.pickle_dump_object(self.__one_hot_encoder_geo, self.onehot_encoder_geo_dump_filepath)
+        IOUtils.pickle_dump_object(self.__standardizer, self.DUMP_FILEPATH_STANDARDIZER)
+        IOUtils.pickle_dump_object(self.__label_encoder_gender, self.DUMP_FILEPATH_LABEL_ENCODER_GENDER)
+        IOUtils.pickle_dump_object(self.__one_hot_encoder_geo, self.DUMP_FILEPATH_ONEHOT_ENCODER_GEO)

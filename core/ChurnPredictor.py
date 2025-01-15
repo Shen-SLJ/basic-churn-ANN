@@ -10,16 +10,16 @@ from utils.PandaUtils import PandaUtils
 
 
 class ChurnPredictor:
-    model_filename = 'model/model.keras'
-    label_encoder_gender_filepath = 'preprocessors/label_encoder_gender.pkl'
-    onehot_encoder_geo_filepath = 'preprocessors/onehot_encoder_geo.pkl'
-    scaler_filepath = 'preprocessors/scaler.pkl'
+    FILEPATH_MODEL = 'model/model.keras'
+    FILEPATH_LABEL_ENCODER_GENDER = 'preprocessors/label_encoder_gender.pkl'
+    FILEPATH_ONEHOT_ENCODER_GEO = 'preprocessors/onehot_encoder_geo.pkl'
+    FILEPATH_SCALER = 'preprocessors/scaler.pkl'
 
     def __init__(self):
-        self.__model = cast(Model, load_model(self.model_filename))
-        self.__label_encoder_gender = cast(LabelEncoder, IOUtils.pickle_load_file(self.label_encoder_gender_filepath))
-        self.__onehot_encoder_geo = cast(OneHotEncoder, IOUtils.pickle_load_file(self.onehot_encoder_geo_filepath))
-        self.__scaler = cast(StandardScaler, IOUtils.pickle_load_file(self.scaler_filepath))
+        self.__model = cast(Model, load_model(self.FILEPATH_MODEL))
+        self.__label_encoder_gender = cast(LabelEncoder, IOUtils.pickle_load_file(self.FILEPATH_LABEL_ENCODER_GENDER))
+        self.__onehot_encoder_geo = cast(OneHotEncoder, IOUtils.pickle_load_file(self.FILEPATH_ONEHOT_ENCODER_GEO))
+        self.__scaler = cast(StandardScaler, IOUtils.pickle_load_file(self.FILEPATH_SCALER))
 
         self.__x = None
 

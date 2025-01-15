@@ -7,7 +7,7 @@ from keras.src.layers import Dense
 from keras.src.losses import BinaryCrossentropy
 from keras.src.optimizers import Adam
 
-model_save_filepath = 'model/model.keras'
+MODEL_SAVE_FILEPATH = 'model/model.keras'
 
 if __name__ == '__main__':
     data_preprocessor = ChurnDatasetPreprocessor()
@@ -46,4 +46,4 @@ if __name__ == '__main__':
     )
 
     # Save the model
-    model.save(model_save_filepath)
+    model.save(MODEL_SAVE_FILEPATH)
