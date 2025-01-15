@@ -14,6 +14,8 @@ onehot_encoder_geo = cast(OneHotEncoder, IOUtils.pickle_load_file('onehot_encode
 scaler = cast(StandardScaler, IOUtils.pickle_load_file('scaler.pkl'))
 
 # Website input fields
+st.set_page_config(page_title="Basic-Churn-ANN")
+
 st.title("Basic-Churn-ANN")
 st.caption(
     "Basic neural network trained to solve binary classification problem of whether a customer will exit based on input data."
