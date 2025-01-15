@@ -1,6 +1,7 @@
 import datetime
 import pandas as pd
 
+from utils.ChurnInputPreprocessingUtils import ChurnInputPreprocessingUtils
 from utils.IOUtils import IOUtils
 from keras import Sequential
 from keras.src.callbacks import TensorBoard, EarlyStopping
@@ -12,7 +13,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler, OneHotEncoder
 
 
-class ChurnDataPreprocessor:
+class ChurnDatasetPreprocessor:
     y_feature = 'Exited'
 
     standardizer_dump_filename = 'scaler.pkl'
@@ -36,10 +37,18 @@ class ChurnDataPreprocessor:
 
     def run(self) -> None:
         self.__drop_useless_columns()
-        self.__replace_gender_with_label_encoding()
-        self.__replace_geography_with_ohe()
+        self.__fit_encoders()
+
+        self.__data = ChurnInputPreprocessingUtils.X_with_ohe_geography(self.__data, self.__one_hot_encoder_geo)
+        self.__data['Gender'] = ChurnInputPreprocessingUtils.X_with_label_encoded_gender(self.__data,
+                                                                                         self.__label_encoder_gender)
+
         self.__create_train_test_split_data()
-        self.__standardize_x_data()
+        self.__fit_standardizer()
+
+        self.__x_train = ChurnInputPreprocessingUtils.X_standardized(self.__x_train, self.__standardizer)
+        self.__x_test = ChurnInputPreprocessingUtils.X_standardized(self.__x_test, self.__standardizer)
+
         self.__dump_preprocessors_if_should_dump()
 
     def x_train(self):
@@ -63,6 +72,13 @@ class ChurnDataPreprocessor:
         IOUtils.pickle_dump_object(self.__label_encoder_gender, self.label_encoder_gender_dump_filename)
         IOUtils.pickle_dump_object(self.__one_hot_encoder_geo, self.onehot_encoder_geo_dump_filename)
 
+    def __fit_encoders(self):
+        self.__one_hot_encoder_geo.fit(self.__data[['Geography']])
+        self.__label_encoder_gender.fit(self.__data['Gender'])
+
+    def __fit_standardizer(self):
+        self.__standardizer.fit(self.__x_train)
+
     def __create_train_test_split_data(self) -> None:
         x = self.__data.drop(self.y_feature, axis=1)
         y = self.__data[self.y_feature]
@@ -70,35 +86,12 @@ class ChurnDataPreprocessor:
             x, y, test_size=self.__split_test_size, random_state=self.__split_random_state
         )
 
-    def __standardize_x_data(self) -> None:
-        self.__standardizer.fit(self.__x_train)
-
-        self.__x_train = self.__standardizer.transform(self.__x_train)
-        self.__x_test = self.__standardizer.transform(self.__x_test)
-
     def __drop_useless_columns(self) -> None:
         self.__data.drop(['RowNumber', 'CustomerId', 'Surname'], axis=1, inplace=True)
 
-    def __replace_gender_with_label_encoding(self) -> None:
-        self.__data['Gender'] = self.__label_encoder_gender.fit_transform(self.__data['Gender'])
-
-    def __geo_ohe_as_dataframe(self) -> pd.DataFrame:
-        geo_ohe = self.__one_hot_encoder_geo.fit_transform(self.__data[['Geography']])
-        geo_ohe_columns = self.__one_hot_encoder_geo.get_feature_names_out()
-
-        out = pd.DataFrame(data=geo_ohe.toarray(), columns=geo_ohe_columns)
-
-        return out
-
-    def __replace_geography_with_ohe(self) -> None:
-        geo_ohe_df = self.__geo_ohe_as_dataframe()
-
-        self.__data.drop(labels=['Geography'], axis=1, inplace=True)
-        self.__data = pd.concat([self.__data, geo_ohe_df], axis=1, copy=False)
-
 
 if __name__ == '__main__':
-    data_preprocessor = ChurnDataPreprocessor()
+    data_preprocessor = ChurnDatasetPreprocessor()
     data_preprocessor.run()
 
     x_train = data_preprocessor.x_train()
