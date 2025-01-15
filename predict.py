@@ -5,7 +5,7 @@ from keras.src.saving import load_model
 from sklearn.preprocessing import OneHotEncoder, LabelEncoder, StandardScaler
 from typing import cast, Any
 
-from utils.ChurnInputPreprocessingUtils import ChurnInputPreprocessingUtils
+from utils.ChurnDataPreprocessingUtils import ChurnDataPreprocessingUtils
 from utils.IOUtils import IOUtils
 from utils.PandaUtils import PandaUtils
 
@@ -49,10 +49,10 @@ class ChurnPredictor:
 
     def __preprocess_x(self):
         self.__x = PandaUtils.dataframe_from_dict(self.__x)
-        self.__x = ChurnInputPreprocessingUtils.X_with_ohe_geography(self.__x, self.__onehot_encoder_geo)
-        self.__x['Gender'] = ChurnInputPreprocessingUtils.X_with_label_encoded_gender(self.__x,
-                                                                                      self.__label_encoder_gender)
-        self.__x = ChurnInputPreprocessingUtils.X_standardized(self.__x, self.__scaler)
+        self.__x = ChurnDataPreprocessingUtils.df_with_ohe_geography(self.__x, self.__onehot_encoder_geo)
+        self.__x['Gender'] = ChurnDataPreprocessingUtils.label_encoded_gender_series_from_df(self.__x,
+                                                                                             self.__label_encoder_gender)
+        self.__x = ChurnDataPreprocessingUtils.df_standardized(self.__x, self.__scaler)
 
 
 if __name__ == '__main__':
