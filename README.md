@@ -1,6 +1,6 @@
 # Basic-Churn-ANN
 Basic neural network trained to solve binary classification problem of whether a 
-customer will exit based on input data. A mini project.
+customer will exit based on input data.
 
 ### Pre-reqs
 * Python 3.12 (and not higher)
