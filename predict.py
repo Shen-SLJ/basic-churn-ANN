@@ -4,7 +4,10 @@ from keras import Model
 from keras.src.saving import load_model
 from sklearn.preprocessing import OneHotEncoder, LabelEncoder, StandardScaler
 from typing import cast, Any
+
+from utils.ChurnInputPreprocessingUtils import ChurnInputPreprocessingUtils
 from utils.IOUtils import IOUtils
+from utils.PandaUtils import PandaUtils
 
 # fake example input data
 input_data = {
@@ -45,30 +48,11 @@ class ChurnPredictor:
         return prediction_probability
 
     def __preprocess_x(self):
-        self.__convert_x_to_df()
-        self.__convert_geography_to_ohe()
-        self.__convert_gender_to_label_encoding()
-        self.__standardize_x_values()
-
-    def __convert_x_to_df(self):
-        self.__x = pd.DataFrame([self.__x])
-
-    def __convert_geography_to_ohe(self):
-        ohe_geography_df = self.__ohe_geography_df()
-        self.__x.drop('Geography', axis=1, inplace=True)
-        self.__x = pd.concat([self.__x, ohe_geography_df], axis=1)
-
-    def __ohe_geography_df(self) -> pd.DataFrame:
-        ohe_geography = self.__onehot_encoder_geo.transform(self.__x[['Geography']])
-        ohe_geography_df = pd.DataFrame(ohe_geography.toarray(),
-                                        columns=self.__onehot_encoder_geo.get_feature_names_out())
-        return ohe_geography_df
-
-    def __convert_gender_to_label_encoding(self):
-        self.__x['Gender'] = self.__label_encoder_gender.transform(self.__x['Gender'])
-
-    def __standardize_x_values(self):
-        self.__x = self.__scaler.transform(self.__x)
+        self.__x = PandaUtils.dataframe_from_dict(self.__x)
+        self.__x = ChurnInputPreprocessingUtils.X_with_ohe_geography(self.__x, self.__onehot_encoder_geo)
+        self.__x['Gender'] = ChurnInputPreprocessingUtils.X_with_label_encoded_gender(self.__x,
+                                                                                      self.__label_encoder_gender)
+        self.__x = ChurnInputPreprocessingUtils.X_standardized(self.__x, self.__scaler)
 
 
 if __name__ == '__main__':

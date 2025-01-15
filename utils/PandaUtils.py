@@ -5,5 +5,5 @@ import pandas as pd
 
 class PandaUtils:
     @staticmethod
-    def convert_dict_to_dataframe(dict_: dict[str, Any]) -> pd.DataFrame:
-        return pd.DataFrame(dict_)
+    def dataframe_from_dict(dict_: dict[str, Any]) -> pd.DataFrame:
+        return pd.DataFrame([dict_])
