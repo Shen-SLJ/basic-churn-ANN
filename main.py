@@ -140,3 +140,6 @@ if __name__ == '__main__':
         epochs=100,
         callbacks=[tensorboard_callback, early_stopping_callback]
     )
+
+    # Save the model
+    model.save('model.keras')
