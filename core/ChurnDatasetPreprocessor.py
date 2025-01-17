@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import pandas as pd
 from pandas import DataFrame
 from sklearn.model_selection import train_test_split
@@ -30,7 +32,7 @@ class ChurnDatasetPreprocessor:
         self.__label_encoder_gender = LabelEncoder()
         self.__one_hot_encoder_geo = OneHotEncoder()
 
-    def run(self) -> None:
+    def run(self) -> ChurnDatasetPreprocessor:
         self.__drop_useless_columns()
         self.__fit_encoders()
         self.__convert_categorical_values_to_numerical()
@@ -38,6 +40,8 @@ class ChurnDatasetPreprocessor:
         self.__fit_standardizer()
         self.__standardize_train_test_data()
         self.__dump_preprocessors_if_should_dump()
+
+        return self
 
     def x_train(self):
         return self.__x_train
