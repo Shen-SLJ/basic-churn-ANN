@@ -8,8 +8,9 @@ from keras.src.layers import Dense
 
 from core.ChurnDatasetPreprocessor import ChurnDatasetPreprocessor
 
-MODEL_SAVE_FILEPATH = 'model/model.keras'
 LOSS_FN_NAME = 'binary_crossentropy'
+LOGS_DIR = 'logs/fit/'
+MODEL_SAVE_FILEPATH = 'model/model.keras'
 OPTIMIZER_NAME = 'adam'
 
 if __name__ == '__main__':
@@ -28,7 +29,7 @@ if __name__ == '__main__':
     model.compile(loss=LOSS_FN_NAME, optimizer=OPTIMIZER_NAME, metrics=['accuracy'])
 
     # Callbacks
-    log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    log_dir = f"{LOGS_DIR}{datetime.datetime.now().strftime("%Y%m%d-%H%M%S")}"
     tensorboard_callback = TensorBoard(log_dir=log_dir, histogram_freq=1)
     early_stopping_callback = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
 
