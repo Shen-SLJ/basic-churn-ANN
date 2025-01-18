@@ -10,9 +10,9 @@ from core.ChurnDatasetPreprocessor import ChurnDatasetPreprocessor
 from utils.PathUtils import PathUtils
 
 LOSS_FN_NAME = 'binary_crossentropy'
-LOGS_DIR = PathUtils.to_abs_path('/logs/fit/')
-MODEL_SAVE_FILEPATH = PathUtils.to_abs_path('/model/model.keras')
 OPTIMIZER_NAME = 'adam'
+FILEPATH_LOGS = PathUtils.to_abs_path('/logs/fit/')
+FILEPATH_MODEL = PathUtils.to_abs_path('/model/model.keras')
 
 if __name__ == '__main__':
     data_preprocessor = ChurnDatasetPreprocessor().run()
@@ -30,9 +30,9 @@ if __name__ == '__main__':
     model.compile(loss=LOSS_FN_NAME, optimizer=OPTIMIZER_NAME, metrics=['accuracy'])
 
     # Callbacks
-    log_dir = f"{LOGS_DIR}{datetime.datetime.now().strftime("%Y%m%d-%H%M%S")}"
+    log_dir = f"{FILEPATH_LOGS}{datetime.datetime.now().strftime("%Y%m%d-%H%M%S")}"
     tensorboard_callback = TensorBoard(log_dir=log_dir, histogram_freq=1)
-    early_stopping_callback = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
+    early_stopping_callback = EarlyStopping(monitor='val_loss', patience=15, restore_best_weights=True)
 
     # Train the model
     model.fit(
@@ -44,4 +44,4 @@ if __name__ == '__main__':
     )
 
     # Save the model
-    model.save(MODEL_SAVE_FILEPATH)
+    model.save(FILEPATH_MODEL)
