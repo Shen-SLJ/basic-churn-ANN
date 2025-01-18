@@ -1,4 +1,4 @@
-# Trainer training on the best parameters found via hyper-tuning
+# Trains the model on the best parameters found via tuning
 
 import datetime
 
