@@ -33,6 +33,6 @@ if __name__ == '__main__':
         callbacks=[early_stopping_callback],
     )
 
-    __print_best_hyperparameter(tuner=tuner, hp_name='layers')
-    __print_best_hyperparameter(tuner=tuner, hp_name='neurons')
-    __print_best_hyperparameter(tuner=tuner, hp_name='loss')
+    __print_best_hyperparameter(tuner=tuner, hp_name=ChurnPredictorHyperModel.HP_LOSS_NAME)
+    __print_best_hyperparameter(tuner=tuner, hp_name=ChurnPredictorHyperModel.HP_N_LAYERS_NAME)
+    __print_best_hyperparameter(tuner=tuner, hp_name=ChurnPredictorHyperModel.HP_LOSS_NAME)

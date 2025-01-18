@@ -5,6 +5,10 @@ from keras_tuner import HyperParameters
 
 
 class ChurnPredictorHyperModel(kt.HyperModel):
+    HP_N_LAYERS_NAME = 'layers'
+    HP_NEURONS_PER_LAYER_NAME = 'neurons'
+    HP_LOSS_NAME = 'loss'
+
     def __init__(self, x_train):
         super().__init__()
 
@@ -33,12 +37,15 @@ class ChurnPredictorHyperModel(kt.HyperModel):
 
     @staticmethod
     def __hp_n_layers(hp: HyperParameters) -> HyperParameters.Choice:
-        return hp.Choice('layers', [1, 2])
+        return hp.Choice(name=ChurnPredictorHyperModel.HP_N_LAYERS_NAME, values=[1, 2])
 
     @staticmethod
     def __hp_neurons_per_layer(hp: HyperParameters) -> HyperParameters.Choice:
-        return hp.Choice('neurons', [8, 16, 32, 64])
+        return hp.Choice(name=ChurnPredictorHyperModel.HP_NEURONS_PER_LAYER_NAME, values=[8, 16, 32, 64])
 
     @staticmethod
     def __hp_loss(hp: HyperParameters) -> HyperParameters.Choice:
-        return hp.Choice('loss', ['binary_crossentropy', 'binary_focal_crossentropy'])
+        return hp.Choice(
+            name=ChurnPredictorHyperModel.HP_LOSS_NAME,
+            values=['binary_crossentropy', 'binary_focal_crossentropy']
+        )
