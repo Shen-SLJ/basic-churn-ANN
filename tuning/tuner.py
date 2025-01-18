@@ -23,7 +23,7 @@ if __name__ == '__main__':
     hypermodel = ChurnPredictorHyperModel(x_train=x_train)
     early_stopping_callback = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
     objective = kt.Objective(name='val_accuracy', direction='max')
-    tuner = kt.GridSearch(hypermodel=hypermodel, objective=objective, project_name='tuning/data')
+    tuner = kt.GridSearch(hypermodel=hypermodel, objective=objective, project_name='data')
 
     tuner.search(
         x=x_train,
@@ -33,6 +33,6 @@ if __name__ == '__main__':
         callbacks=[early_stopping_callback],
     )
 
-    __print_best_hyperparameter(tuner=tuner, hp_name=ChurnPredictorHyperModel.HP_LOSS_NAME)
+    __print_best_hyperparameter(tuner=tuner, hp_name=ChurnPredictorHyperModel.HP_NEURONS_PER_LAYER_NAME)
     __print_best_hyperparameter(tuner=tuner, hp_name=ChurnPredictorHyperModel.HP_N_LAYERS_NAME)
     __print_best_hyperparameter(tuner=tuner, hp_name=ChurnPredictorHyperModel.HP_LOSS_NAME)

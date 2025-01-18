@@ -7,13 +7,14 @@ from sklearn.preprocessing import LabelEncoder, OneHotEncoder, StandardScaler
 from utils.ChurnDataPreprocessingUtils import ChurnDataPreprocessingUtils
 from utils.IOUtils import IOUtils
 from utils.PandaUtils import PandaUtils
+from utils.PathUtils import PathUtils
 
 
 class ChurnPredictor:
-    FILEPATH_MODEL = 'model/model.keras'
-    FILEPATH_LABEL_ENCODER_GENDER = 'preprocessors/label_encoder_gender.pkl'
-    FILEPATH_ONEHOT_ENCODER_GEO = 'preprocessors/onehot_encoder_geo.pkl'
-    FILEPATH_SCALER = 'preprocessors/scaler.pkl'
+    FILEPATH_MODEL = PathUtils.to_abs_path('model/model.keras')
+    FILEPATH_LABEL_ENCODER_GENDER = PathUtils.to_abs_path('dump/label_encoder_gender.pkl')
+    FILEPATH_ONEHOT_ENCODER_GEO = PathUtils.to_abs_path('dump/onehot_encoder_geo.pkl')
+    FILEPATH_SCALER = PathUtils.to_abs_path('dump/scaler.pkl')
 
     def __init__(self):
         self.__model = cast(Model, load_model(self.FILEPATH_MODEL))

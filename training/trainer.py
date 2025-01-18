@@ -7,10 +7,11 @@ from keras.src.callbacks import TensorBoard, EarlyStopping
 from keras.src.layers import Dense
 
 from core.ChurnDatasetPreprocessor import ChurnDatasetPreprocessor
+from utils.PathUtils import PathUtils
 
 LOSS_FN_NAME = 'binary_crossentropy'
-LOGS_DIR = 'logs/fit/'
-MODEL_SAVE_FILEPATH = 'model/model.keras'
+LOGS_DIR = PathUtils.to_abs_path('/logs/fit/')
+MODEL_SAVE_FILEPATH = PathUtils.to_abs_path('/model/model.keras')
 OPTIMIZER_NAME = 'adam'
 
 if __name__ == '__main__':

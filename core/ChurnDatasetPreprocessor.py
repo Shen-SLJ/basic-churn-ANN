@@ -7,15 +7,16 @@ from sklearn.preprocessing import StandardScaler, LabelEncoder, OneHotEncoder
 
 from utils.ChurnDataPreprocessingUtils import ChurnDataPreprocessingUtils
 from utils.IOUtils import IOUtils
+from utils.PathUtils import PathUtils
 
 
 class ChurnDatasetPreprocessor:
     Y_FEATURE_NAME = 'Exited'
 
-    FILEPATH_CHURN_DATASET = 'data/churn_modelling.csv'
-    DUMP_FILEPATH_STANDARDIZER = 'preprocessors/scaler.pkl'
-    DUMP_FILEPATH_LABEL_ENCODER_GENDER = 'preprocessors/label_encoder_gender.pkl'
-    DUMP_FILEPATH_ONEHOT_ENCODER_GEO = 'preprocessors/onehot_encoder_geo.pkl'
+    FILEPATH_CHURN_DATASET = PathUtils.to_abs_path('data/churn_modelling.csv')
+    DUMP_FILEPATH_STANDARDIZER = PathUtils.to_abs_path('dump/scaler.pkl')
+    DUMP_FILEPATH_LABEL_ENCODER_GENDER = PathUtils.to_abs_path('dump/label_encoder_gender.pkl')
+    DUMP_FILEPATH_ONEHOT_ENCODER_GEO = PathUtils.to_abs_path('dump/onehot_encoder_geo.pkl')
 
     def __init__(self, dump_preprocessors=True, split_test_size=0.2, split_random_state=42):
         self.__data: DataFrame = pd.read_csv(self.FILEPATH_CHURN_DATASET)
