@@ -1,3 +1,5 @@
+# Trainer training on the best parameters found via hyper-tuning
+
 import datetime
 
 from keras import Sequential
@@ -9,7 +11,6 @@ from core.ChurnDatasetPreprocessor import ChurnDatasetPreprocessor
 MODEL_SAVE_FILEPATH = 'model/model.keras'
 LOSS_FN_NAME = 'binary_crossentropy'
 OPTIMIZER_NAME = 'adam'
-
 
 if __name__ == '__main__':
     data_preprocessor = ChurnDatasetPreprocessor().run()
