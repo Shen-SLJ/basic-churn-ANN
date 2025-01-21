@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
     hypermodel = ChurnPredictorHyperModel(x_train=x_train)
     early_stopping_callback = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
-    objective = kt.Objective(name='val_loss', direction='min')
+    objective = kt.Objective(name='val_accuracy', direction='max')
     tuner = kt.GridSearch(hypermodel=hypermodel, objective=objective, project_name='data')
 
     tuner.search(
