@@ -32,7 +32,7 @@ if __name__ == '__main__':
     # Callbacks
     log_dir = f"{FILEPATH_LOGS}{datetime.datetime.now().strftime("%Y%m%d-%H%M%S")}"
     tensorboard_callback = TensorBoard(log_dir=log_dir, histogram_freq=1)
-    early_stopping_callback = EarlyStopping(monitor='val_accuracy', patience=15, restore_best_weights=True)
+    early_stopping_callback = EarlyStopping(monitor='val_loss', patience=15, restore_best_weights=True)
 
     # Train the model
     model.fit(
