@@ -36,15 +36,15 @@ class ChurnPredictorHyperModel(kt.HyperModel):
         model.add(Dense(1, activation='sigmoid'))
 
     @staticmethod
-    def __hp_n_layers(hp: HyperParameters) -> HyperParameters.Choice:
+    def __hp_n_layers(hp: HyperParameters) -> int:
         return hp.Choice(name=ChurnPredictorHyperModel.HP_N_LAYERS_NAME, values=[1, 2])
 
     @staticmethod
-    def __hp_neurons_per_layer(hp: HyperParameters) -> HyperParameters.Choice:
+    def __hp_neurons_per_layer(hp: HyperParameters) -> int:
         return hp.Choice(name=ChurnPredictorHyperModel.HP_NEURONS_PER_LAYER_NAME, values=[8, 16, 32, 64])
 
     @staticmethod
-    def __hp_loss(hp: HyperParameters) -> HyperParameters.Choice:
+    def __hp_loss(hp: HyperParameters) -> int:
         return hp.Choice(
             name=ChurnPredictorHyperModel.HP_LOSS_NAME,
             values=['binary_crossentropy', 'binary_focal_crossentropy']
